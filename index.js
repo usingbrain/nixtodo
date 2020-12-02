@@ -16,25 +16,6 @@ var weatherConditions = {
     ]
 }
 
-/* get weather through code or FormData
-
-function Forecast(temp, sun, rain) {
-     this.temp = temp;
-     this.sun = sun;
-     this.rain = rain;
-}
-
-var forecast1 = new Forecast(15, true, false);
-
-let myForm = document.getElementById('formInput');
-let formData = new FormData(myForm);
-console.log(formData);
-
-*/
-
-
-
-
 
 document.getElementsByClassName("btn")[0].addEventListener("click", function () {
 
