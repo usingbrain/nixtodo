@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>nixtodo</title>
+</head>
+<body>
+    <h1>Don't know what to do?</h1>
+    <h3>First tell me what the weather is like</h3>
+    <form action="" class="weatherInput" id="formInput">
+        <label for="temperature">How is the temperature?</label>
+        <input type="number" name="temp" id="temperature" min="-50" max="50" required>
+        <br>
+        <label for="sunny">Is the sun out?</label>
+        <select name="sun" id="sunny" required>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select>
+        <br>
+        <label for="rainy">Is it raining?</label>
+        <select name="rain" id="rainy" required>
+            <option value="no">no</option>
+            <option value="yes">yes</option>
+        </select>
+        <br>
+        <button type="button" class="btn">Let's see...</button>
+    </form>
+
+    <!--weather-->
+    <div class="weather">
+        <p>das ist das wetter</p>
+    </div>
+
+    <!--suggestions-->
+    <div class="activity">
+        <h3>do this instead!</h3>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

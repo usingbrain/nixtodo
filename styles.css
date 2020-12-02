@@ -1,0 +1,46 @@
+body {
+  text-align: center;
+  background-color: plum;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: bolder;
+  color: white;
+  margin-top: 4rem;
+}
+
+h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.weatherInput {
+  padding: 20px;
+}
+
+label {
+  margin: 10px;
+}
+
+.submitbtn {
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 20px;
+  background-color: white;
+  color: plum;
+  font-size: 1.5rem;
+  margin: 10px;
+}
+
+.weather {
+  visibility: hidden;
+  padding: 30px;
+}
+
+.activity {
+  visibility: hidden;
+}
