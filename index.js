@@ -1,65 +1,79 @@
- //import db from "./db"
+import { apiKey } from "./modules/apikey.js";
+import { activities } from "./modules/activities.js";
 
-var weatherConditions = {
-    bad: [
-        "How about visiting a museum or a gallery you haven't been to?",
-        "Is there a planetarium? Go look at the stars!",
-        "Well, this weather is best for a marathon! Bingewatching marathon that is. Harry Potter or Lord of the Rings?"
-    ],
-    good: ["Try geocaching in your area!",
-            "A zoo is always fun!",
-            "How about a picnic in the nearest park?"
-    ],
-    all: ["Try new cuisine. Takeout, restaurant or as a recipe if you are feeling brave!",
-        "Create an art piece from stuff you can find at home. Search #mixedmedia for inspiration",
-        "Sing your heart at a karaoke!"
-    ]
+function suggestActivity(temp, rain, snow) {
+  const activity = document.getElementsByClassName("activity")[0];
+  activity.style.visibility = "visible";
+
+  function randomN(x) {
+    return Math.floor(Math.random() * x);
+  }
+
+  if (temp > 18 && !rain) {
+    const good = activities.goodWeather;
+    const num = randomN(good.length);
+    activity.innerHTML = good[num];
+  } else if (rain || snow || temp <= 18) {
+    const bad = activities.badWeather;
+    const num = randomN(bad.length);
+    activity.innerHTML = bad[num];
+  } else {
+    activity.innerHTML = activities.any[randomN];
+  }
 }
 
+document
+  .getElementsByClassName("weatherForm")[0]
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+    const cityName = document.getElementById("city").value;
+    const url =
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
+      cityName +
+      "&appid=" +
+      apiKey +
+      "&units=metric";
 
-document.getElementsByClassName("btn")[0].addEventListener("click", function () {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const weatherConditions = data.weather[0].description;
+        const temp = Math.floor(data.main.temp);
+        const rain = data.rain;
+        const snow = data.snow;
+        const clouds = data.clouds;
 
-    var weatherInput = {
-        temp: document.getElementById("formInput").elements[0].value,
-        isSunny: document.getElementById("formInput").elements[1].value == "yes",
-        isRainy: document.getElementById("formInput").elements[2].value == "yes"
-    };
+        var wetter = document.getElementsByClassName("weather")[0];
+        wetter.style.visibility = "visible";
+        wetter.innerHTML = `It is ${temp} degrees outside and ${weatherConditions}!`;
 
-    console.log(weatherInput);
-    
+        suggestActivity(temp, rain, snow);
+      })
+      .catch((error) => {
+        console.log(error);
+        const prompt = document.getElementById("prompt");
+        function newPrompt() {
+          prompt.innerHTML = `Sorry, I can't find this city. Is there a typo?`;
+          prompt.style.color = "red";
+        }
 
-    var wetter = document.getElementsByClassName("weather")[0];
-    wetter.style.visibility = "visible";
-    var sky
-    if (weatherInput.isSunny) {
-        sky = "it's sunny";
-    }
-    else {
-        sky = "it's cloudy";
-    }
-    var rain
-    if (weatherInput.isRainy) {
-        rain = "it rains!";
-    }
-    else {
-        rain = "there is no rain!"
-    };
-    wetter.innerHTML = `Today there is ${weatherInput.temp} degrees outside, ${sky} and ${rain}`;
+        function removePrompt() {
+          prompt.innerHTML = `First tell me where you are`;
+          prompt.style.color = "white";
+        }
 
-    var activity = document.getElementsByClassName("activity")[0];
-    activity.style.visibility = "visible";
+        newPrompt();
+        setTimeout(removePrompt, 3000);
+      });
 
-    var randomN = Math.floor(Math.random() * 3);
+    //
+  });
 
-    if ((weatherInput.temp > 18) && (!weatherInput.isRainy)) {
-        activity.innerHTML = weatherConditions.good[randomN];
-    }
-    else if (weatherInput.isRainy || (weatherInput.temp <=18) ) {
-        activity.innerHTML = weatherConditions.bad[randomN];
-    }
-    else {
-        activity.innerHTML = weatherConditions.all[randomN];
-    };
-})
-
-// //console.log(db);
+document.getElementById("city").addEventListener("click", function () {
+  const wetter = document.getElementsByClassName("weather")[0];
+  wetter.style.visibility = "hidden";
+  const activity = document.getElementsByClassName("activity")[0];
+  activity.style.visibility = "hidden";
+  document.getElementById("city").value = "";
+});
