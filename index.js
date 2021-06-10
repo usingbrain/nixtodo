@@ -13,12 +13,14 @@ function suggestActivity(temp, rain, snow) {
     const good = activities.goodWeather;
     const num = randomN(good.length);
     activity.innerHTML = good[num];
-  } else if (rain || snow || temp <= 18) {
+  } else if (rain & (temp <= 18)) {
     const bad = activities.badWeather;
     const num = randomN(bad.length);
     activity.innerHTML = bad[num];
   } else {
-    activity.innerHTML = activities.any[randomN];
+    const any = activities.any;
+    const num = randomN(any.length);
+    activity.innerHTML = any[num];
   }
 }
 
